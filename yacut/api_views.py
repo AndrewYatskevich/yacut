@@ -1,4 +1,5 @@
 from flask import jsonify, request, url_for
+from http import HTTPStatus
 
 from . import app, db
 from .error_handlers import InvalidAPIUsage
@@ -10,18 +11,22 @@ from .utils import validate_custom_id, get_unique_short_id
 def get_url(short_id):
     url_map = URLMap.query.filter_by(short=short_id).first()
     if url_map is None:
-        raise InvalidAPIUsage('Указанный id не найден', 404)
-    return jsonify({'url': url_map.original}), 200
+        raise InvalidAPIUsage('Указанный id не найден', HTTPStatus.NOT_FOUND)
+    return jsonify({'url': url_map.original}), HTTPStatus.OK
 
 
 @app.route('/api/id/', methods=['POST'])
 def add_url():
     data = request.get_json()
     if data is None:
-        raise InvalidAPIUsage('Отсутствует тело запроса', status_code=400)
+        raise InvalidAPIUsage(
+            'Отсутствует тело запроса',
+            status_code=HTTPStatus.BAD_REQUEST
+        )
     if 'url' not in data:
         raise InvalidAPIUsage(
-            '\"url\" является обязательным полем!', status_code=400
+            '\"url\" является обязательным полем!',
+            status_code=HTTPStatus.BAD_REQUEST
         )
     if 'custom_id' in data and data['custom_id'] not in (None, ''):
         validate_custom_id(data['custom_id'])
@@ -39,4 +44,4 @@ def add_url():
             'url': url_map.original,
             'short_link': url_for('index_view', _external=True) + url_map.short
         }
-    ), 201
+    ), HTTPStatus.CREATED

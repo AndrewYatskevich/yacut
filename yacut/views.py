@@ -1,4 +1,5 @@
 from flask import abort, redirect, render_template, url_for
+from http import HTTPStatus
 
 from . import db, app
 from .models import URLMap
@@ -33,5 +34,5 @@ def index_view():
 def redirect_view(short):
     url_map = URLMap.query.filter_by(short=short).first()
     if url_map is None:
-        abort(404)
-    return redirect(url_map.original, 302)
+        abort(HTTPStatus.NOT_FOUND)
+    return redirect(url_map.original, HTTPStatus.FOUND)
