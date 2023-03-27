@@ -1,14 +1,27 @@
-Клонировать репозиторий и перейти в него в командной строке:
+# YaCut
+
+### Описание
+
+YaCut - сервис сокращения URL адресов.
+
+### Технологии
+
+Python 3.7
+Flask 2.0.2
+
+### Запуск проекта в dev-режиме
+
+- Клонировать репозиторий и перейти в него в командной строке:
 
 ```
-git clone 
+git clone https://github.com/AndrewYatskevich/yacut.git
 ```
 
 ```
 cd yacut
 ```
 
-Cоздать и активировать виртуальное окружение:
+- Cоздать и активировать виртуальное окружение:
 
 ```
 python3 -m venv venv
@@ -26,7 +39,7 @@ python3 -m venv venv
     source venv/scripts/activate
     ```
 
-Установить зависимости из файла requirements.txt:
+- Установить зависимости из файла requirements.txt:
 
 ```
 python3 -m pip install --upgrade pip
@@ -35,3 +48,17 @@ python3 -m pip install --upgrade pip
 ```
 pip install -r requirements.txt
 ```
+
+- Выполнить миграции:
+
+```
+flask db upgrade
+```
+
+- Запустить проект:
+
+```
+flask run
+```
+
+Автор: Андрей Яцкевич https://github.com/AndrewYatskevich
